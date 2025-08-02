@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error {{ error_code }} - AgroSmart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">AgroSmart</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="hero" style="margin-top: 4rem;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">
+                {% if error_code == 404 %}
+                🌾
+                {% else %}
+                ⚠️
+                {% endif %}
+            </div>
+            <h1>{{ error_code }}</h1>
+            <p>{{ error_message }}</p>
+            
+            {% if error_code == 404 %}
+            <p>The page you're looking for seems to have grown away like a plant in the wrong season.</p>
+            {% else %}
+            <p>Something went wrong on our end. Our technical team has been notified and is working on it.</p>
+            {% endif %}
+            
+            <a href="{{ url_for('home') }}" class="submit-btn" style="width: auto; display: inline-flex; text-decoration: none; margin-top: 2rem;">
+                <span>Return Home</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <h3>🤝 Need Help?</h3>
+            <div class="form-grid">
+                <div>
+                    <h4>Common Issues</h4>
+                    <ul style="padding-left: 1rem;">
+                        <li>Check your internet connection</li>
+                        <li>Refresh the page</li>
+                        <li>Clear your browser cache</li>
+                        <li>Try logging out and back in</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Quick Actions</h4>
+                    <ul style="padding-left: 1rem;">
+                        <li><a href="{{ url_for('home') }}">Return to Dashboard</a></li>
+                        <li><a href="{{ url_for('recommend') }}">Get Fertilizer Recommendation</a></li>
+                        <li><a href="{{ url_for('carbon_footprint') }}">Calculate Carbon Footprint</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
