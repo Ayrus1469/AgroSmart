@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recommendation History - AgroSmart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">AgroSmart</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('recommend') }}">Fertilizer Recommendation</a></li>
+            <li><a href="{{ url_for('carbon_footprint') }}">Carbon Footprint</a></li>
+            <li><a href="{{ url_for('history') }}" class="active">History</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div>
+                    <h2>📊 Recommendation History</h2>
+                    <p>Track your fertilizer recommendations and analyze trends over time.</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button id="exportData" class="submit-btn" style="width: auto; padding: 0.75rem 1.5rem;">
+                        <span>Export Data</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15M12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button id="clearHistory" class="submit-btn" style="width: auto; padding: 0.75rem 1.5rem; background: var(--error);">
+                        <span>Clear History</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 6H5H21M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="historyContainer">
+                <p class="text-center">Loading recommendation history...</p>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <h3>📈 Quick Statistics</h3>
+                <div id="quickStats">
+                    <div class="stat-item">
+                        <h4 id="totalRecommendations">-</h4>
+                        <p>Total Recommendations</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4 id="mostUsedFertilizer">-</h4>
+                        <p>Most Recommended</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4 id="averageConfidence">-</h4>
+                        <p>Average Confidence</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🎯 Usage Tips</h3>
+                <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Track Patterns:</strong> Look for trends in your fertilizer usage</li>
+                    <li><strong>Seasonal Analysis:</strong> Compare recommendations across seasons</li>
+                    <li><strong>Export Data:</strong> Download CSV for detailed analysis</li>
+                    <li><strong>Confidence Levels:</strong> Higher confidence indicates better matches</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🔍 Understanding Your Data</h3>
+            <div class="form-grid">
+                <div>
+                    <h4>Recommendation Methods</h4>
+                    <ul style="padding-left: 1rem; margin: 0.5rem 0;">
+                        <li><strong>ML Model:</strong> AI-powered predictions (highest accuracy)</li>
+                        <li><strong>Exact Match:</strong> Direct database lookup (100% confidence)</li>
+                        <li><strong>Closest Match:</strong> Similarity-based matching (variable confidence)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Confidence Scores</h4>
+                    <ul style="padding-left: 1rem; margin: 0.5rem 0;">
+                        <li><strong>95-100%:</strong> Highly reliable recommendation</li>
+                        <li><strong>80-94%:</strong> Good match with minor variations</li>
+                        <li><strong>60-79%:</strong> Reasonable match, consider alternatives</li>
+                        <li><strong>Below 60%:</strong> Low confidence, seek expert advice</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+    <script>
+        // Additional history-specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            updateQuickStats();
+            
+            // Update stats when history changes
+            const observer = new MutationObserver(updateQuickStats);
+            observer.observe(document.getElementById('historyContainer'), { childList: true, subtree: true });
+        });
+
+        function updateQuickStats() {
+            const recommendations = JSON.parse(localStorage.getItem('agrosmartHistory') || '[]');
+            
+            // Total recommendations
+            document.getElementById('totalRecommendations').textContent = recommendations.length;
+            
+            // Most used fertilizer
+            if (recommendations.length > 0) {
+                const fertilizerCounts = {};
+                recommendations.forEach(rec => {
+                    fertilizerCounts[rec.fertilizer] = (fertilizerCounts[rec.fertilizer] || 0) + 1;
+                });
+                
+                const mostUsed = Object.entries(fertilizerCounts)
+                    .sort(([,a], [,b]) => b - a)[0];
+                
+                document.getElementById('mostUsedFertilizer').textContent = 
+                    mostUsed ? mostUsed[0] : 'None';
+                
+                // Average confidence
+                const avgConfidence = recommendations.reduce((sum, rec) => sum + rec.confidence, 0) / recommendations.length;
+                document.getElementById('averageConfidence').textContent = 
+                    avgConfidence.toFixed(1) + '%';
+            } else {
+                document.getElementById('mostUsedFertilizer').textContent = 'None';
+                document.getElementById('averageConfidence').textContent = 'N/A';
+            }
+        }
+    </script>
+    
+    <style>
+        #quickStats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(46, 139, 87, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(46, 139, 87, 0.1);
+        }
+        
+        .stat-item h4 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .stat-item p {
+            color: var(--text-light);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</body>
+</html>

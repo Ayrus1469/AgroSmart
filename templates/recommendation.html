@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fertilizer Recommendation - AgroSmart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">AgroSmart</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('recommend') }}" class="active">Fertilizer Recommendation</a></li>
+            <li><a href="{{ url_for('carbon_footprint') }}">Carbon Footprint</a></li>
+            <li><a href="{{ url_for('history') }}">History</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section class="form-section">
+            <div class="form-header">
+                <h2>🌿 Fertilizer Recommendation</h2>
+                <p>Enter your soil and crop details below to get personalized fertilizer recommendations powered by AI.</p>
+            </div>
+
+            <form id="fertilizerForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="Temperature">🌡️ Temperature (°C)</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="-10" 
+                               max="50" 
+                               id="Temperature" 
+                               required 
+                               placeholder="e.g., 25.5">
+                        <small>Typical range: 15-35°C</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Humidity">💧 Humidity (%)</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="0" 
+                               max="100" 
+                               id="Humidity" 
+                               required 
+                               placeholder="e.g., 65.0">
+                        <small>Typical range: 40-90%</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Moisture">🌊 Soil Moisture (%)</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="0" 
+                               max="100" 
+                               id="Moisture" 
+                               required 
+                               placeholder="e.g., 45.0">
+                        <small>Typical range: 20-80%</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Nitrogen">🧪 Nitrogen (N) kg/ha</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="0" 
+                               max="500" 
+                               id="Nitrogen" 
+                               required 
+                               placeholder="e.g., 120.0">
+                        <small>Typical range: 50-300 kg/ha</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Phosphorus">⚗️ Phosphorus (P) kg/ha</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="0" 
+                               max="200" 
+                               id="Phosphorus" 
+                               required 
+                               placeholder="e.g., 60.0">
+                        <small>Typical range: 20-120 kg/ha</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Potassium">🧲 Potassium (K) kg/ha</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="0" 
+                               max="300" 
+                               id="Potassium" 
+                               required 
+                               placeholder="e.g., 80.0">
+                        <small>Typical range: 30-180 kg/ha</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Soil Type">🌍 Soil Type</label>
+                        <select id="Soil Type" required>
+                            <option value="">Select soil type</option>
+                            {% for soil_type in soil_types %}
+                            <option value="{{ soil_type }}">{{ soil_type }}</option>
+                            {% endfor %}
+                        </select>
+                        <small>Choose your predominant soil type</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Crop Type">🌾 Crop Type</label>
+                        <select id="Crop Type" required>
+                            <option value="">Select crop type</option>
+                            {% for crop_type in crop_types %}
+                            <option value="{{ crop_type }}">{{ crop_type }}</option>
+                            {% endfor %}
+                        </select>
+                        <small>Choose your primary crop</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span>Get Recommendation</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </form>
+
+            <div class="result" id="result" style="display:none;"></div>
+        </section>
+
+        <div class="card">
+            <h3>💡 Tips for Better Recommendations</h3>
+            <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                <li><strong>Soil Testing:</strong> Use recent soil test results for accurate NPK values</li>
+                <li><strong>Weather Data:</strong> Enter current or expected weather conditions</li>
+                <li><strong>Crop Stage:</strong> Consider your crop's growth stage for timing</li>
+                <li><strong>Local Conditions:</strong> Factor in your region's typical growing conditions</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>🔬 Understanding NPK Values</h3>
+            <div class="form-grid">
+                <div>
+                    <h4>Nitrogen (N)</h4>
+                    <p>Essential for leaf growth and chlorophyll production. Promotes vegetative growth and green color.</p>
+                </div>
+                <div>
+                    <h4>Phosphorus (P)</h4>
+                    <p>Critical for root development, flowering, and fruit production. Enhances energy transfer in plants.</p>
+                </div>
+                <div>
+                    <h4>Potassium (K)</h4>
+                    <p>Improves disease resistance, water regulation, and overall plant health. Enhances fruit quality.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+    <style>
+        .form-group small {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+        
+        .form-group input.warning {
+            border-color: var(--warning);
+            background: rgba(255, 152, 0, 0.05);
+        }
+        
+        .form-group input.valid {
+            border-color: var(--success);
+        }
+        
+        .form-group input.invalid {
+            border-color: var(--error);
+            background: rgba(244, 67, 54, 0.05);
+        }
+
+        .loading-text {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-light);
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timestamp {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .history-details {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .login-info {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(46, 139, 87, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .login-info h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .login-info p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .login-info small {
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+    </style>
+</body>
+</html>

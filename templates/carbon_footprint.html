@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Carbon Footprint Calculator - AgroSmart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">AgroSmart</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('recommend') }}">Fertilizer Recommendation</a></li>
+            <li><a href="{{ url_for('carbon_footprint') }}" class="active">Carbon Footprint</a></li>
+            <li><a href="{{ url_for('history') }}">History</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section class="form-section">
+            <div class="form-header">
+                <h2>🌍 Carbon Footprint Calculator</h2>
+                <p>Calculate your agricultural carbon footprint and discover ways to reduce environmental impact.</p>
+            </div>
+
+            <form id="carbonForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="area">📏 Farm Area (hectares)</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="0.1" 
+                               id="area" 
+                               required 
+                               placeholder="e.g., 10.5">
+                        <small>Total cultivated area</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fertilizer_type">🧪 Primary Fertilizer Type</label>
+                        <select id="fertilizer_type" required>
+                            <option value="">Select fertilizer type</option>
+                            <option value="synthetic">Synthetic/Chemical</option>
+                            <option value="organic">Organic</option>
+                            <option value="mixed">Mixed (Synthetic + Organic)</option>
+                        </select>
+                        <small>Most frequently used fertilizer</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fertilizer_amount">⚖️ Annual Fertilizer Usage (kg/ha)</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="0" 
+                               id="fertilizer_amount" 
+                               required 
+                               placeholder="e.g., 250">
+                        <small>Average fertilizer application per hectare</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="machinery_hours">🚜 Machinery Hours/Year</label>
+                        <input type="number" 
+                               step="0.1" 
+                               min="0" 
+                               id="machinery_hours" 
+                               required 
+                               placeholder="e.g., 120">
+                        <small>Total tractor/machinery operating hours</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="irrigation_type">💧 Irrigation Method</label>
+                        <select id="irrigation_type" required>
+                            <option value="">Select irrigation method</option>
+                            <option value="drip">Drip Irrigation</option>
+                            <option value="sprinkler">Sprinkler System</option>
+                            <option value="flood">Flood/Furrow</option>
+                            <option value="rain_fed">Rain-fed (No irrigation)</option>
+                        </select>
+                        <small>Primary water management method</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="energy_source">⚡ Primary Energy Source</label>
+                        <select id="energy_source" required>
+                            <option value="">Select energy source</option>
+                            <option value="electricity">Grid Electricity</option>
+                            <option value="diesel">Diesel Generator</option>
+                            <option value="solar">Solar Power</option>
+                            <option value="mixed_renewable">Mixed (with renewables)</option>
+                        </select>
+                        <small>Main power source for operations</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transportation">🚛 Transportation Distance (km)</label>
+                        <input type="number" 
+                               step="1" 
+                               min="0" 
+                               id="transportation" 
+                               required 
+                               placeholder="e.g., 50">
+                        <small>Average distance to markets/storage</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="waste_management">♻️ Waste Management</label>
+                        <select id="waste_management" required>
+                            <option value="">Select waste method</option>
+                            <option value="composting">Composting</option>
+                            <option value="burning">Field Burning</option>
+                            <option value="recycling">Recycling/Reuse</option>
+                            <option value="landfill">Disposal to Landfill</option>
+                        </select>
+                        <small>How agricultural waste is handled</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span>Calculate Carbon Footprint</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 21L12 12L21 21M3 3L12 12L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </form>
+
+            <div class="result" id="carbonResult" style="display:none;"></div>
+        </section>
+
+        <div class="card">
+            <h3>🌱 Sustainable Farming Practices</h3>
+            <div class="form-grid">
+                <div>
+                    <h4>Precision Agriculture</h4>
+                    <p>Use GPS and sensors to optimize fertilizer application, reducing waste and emissions.</p>
+                </div>
+                <div>
+                    <h4>Cover Crops</h4>
+                    <p>Plant cover crops to improve soil health and capture carbon naturally.</p>
+                </div>
+                <div>
+                    <h4>Organic Fertilizers</h4>
+                    <p>Switch to organic alternatives that have lower carbon footprints.</p>
+                </div>
+                <div>
+                    <h4>Renewable Energy</h4>
+                    <p>Invest in solar or wind power for irrigation and processing operations.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📊 Carbon Footprint Factors</h3>
+            <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                <li><strong>Fertilizer Production:</strong> Manufacturing synthetic fertilizers releases significant CO₂</li>
+                <li><strong>Machinery Operations:</strong> Diesel fuel consumption during field operations</li>
+                <li><strong>Irrigation Systems:</strong> Energy required for water pumping and distribution</li>
+                <li><strong>Transportation:</strong> Fuel used for moving products to markets</li>
+                <li><strong>Waste Management:</strong> Decomposition and disposal methods affect emissions</li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
