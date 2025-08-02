@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - AgroSmart</title>
+    <title>Welcome to AgroSmart - Your Agricultural Partner</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,19 +13,19 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <h1>🌱 AgroSmart</h1>
-                <p>Smart Agricultural Solutions</p>
+                <h1>🌾 AgroSmart</h1>
+                <p>Cultivating Tomorrow's Agriculture with AI Intelligence</p>
             </div>
             
             <form id="loginForm" method="POST">
                 <div class="form-group">
-                    <label for="username">👤 Username</label>
-                    <input type="text" id="username" name="username" required placeholder="Enter your username">
+                    <label for="username">👨‍🌾 Farmer ID</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter your farmer ID" autocomplete="username">
                 </div>
                 
                 <div class="form-group">
-                    <label for="password">🔒 Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    <label for="password">🔐 Access Key</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your access key" autocomplete="current-password">
                 </div>
                 
                 {% if error %}
@@ -35,18 +35,30 @@
                 {% endif %}
                 
                 <button type="submit" class="submit-btn">
-                    <span>Sign In</span>
+                    <span>Enter Your Field</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
             </form>
             
-            <div class="login-info">
-                <h3>Demo Credentials</h3>
-                <p><strong>Username:</strong> farmer</p>
-                <p><strong>Password:</strong> 12345</p>
-                <small>This is a demo application for agricultural fertilizer recommendations.</small>
+            <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(240, 248, 240, 0.6), rgba(255, 255, 255, 0.8)); border-radius: 16px; border-left: 4px solid var(--harvest-gold);">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                    🌱 Demo Access
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <p style="margin: 0; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">Farmer ID:</p>
+                        <p style="margin: 0; color: var(--primary); font-weight: 600; font-family: monospace;">farmer</p>
+                    </div>
+                    <div>
+                        <p style="margin: 0; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">Access Key:</p>
+                        <p style="margin: 0; color: var(--primary); font-weight: 600; font-family: monospace;">12345</p>
+                    </div>
+                </div>
+                <small style="color: var(--text-muted); font-style: italic; line-height: 1.5;">
+                    Welcome to the AgroSmart demonstration platform. Experience AI-powered agricultural insights and precision farming recommendations tailored for modern agriculture.
+                </small>
             </div>
         </div>
     </div>
