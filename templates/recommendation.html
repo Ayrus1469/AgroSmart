@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fertilizer Recommendation - AgroSmart</title>
+    <title>Smart Fertilizer Recommendations - AgroSmart</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,9 +14,9 @@
         <div class="logo">AgroSmart</div>
         <ul class="nav-links">
             <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('recommend') }}" class="active">Fertilizer Recommendation</a></li>
+            <li><a href="{{ url_for('recommend') }}" class="active">Smart Recommendations</a></li>
             <li><a href="{{ url_for('carbon_footprint') }}">Carbon Footprint</a></li>
-            <li><a href="{{ url_for('history') }}">History</a></li>
+            <li><a href="{{ url_for('history') }}">Field History</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
     </nav>
@@ -24,8 +24,8 @@
     <main class="container">
         <section class="form-section">
             <div class="form-header">
-                <h2>🌿 Fertilizer Recommendation</h2>
-                <p>Enter your soil and crop details below to get personalized fertilizer recommendations powered by AI.</p>
+                <h2>🌾 Smart Fertilizer Recommendations</h2>
+                <p>Harness the power of AI-driven agriculture. Enter your soil conditions and crop details to receive precision fertilizer recommendations tailored to your specific field requirements.</p>
             </div>
 
             <form id="fertilizerForm">
